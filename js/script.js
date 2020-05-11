@@ -20,9 +20,9 @@ titleSelect.addEventListener('change', () => {
 const designSelect = document.getElementById('design');
 designSelect.options[0].style.display = 'none';
 
-// Update "Color" field to read "Please select a T-shirt theme"
+// Update "Color" field to read "Please select a T-shirt theme
 const colorSelect = document.getElementById('color');
-colorSelect.options[0].textContent = 'Please select a T-shirt theme';
+colorSelect.style.display = 'none';
 
 // Hide the colors in the "Color" drop down menu
 for (let i = 0; i < colorSelect.options.length; i++) {
@@ -31,20 +31,36 @@ for (let i = 0; i < colorSelect.options.length; i++) {
 
 // Update "Color" field when corresponding color theme is selected in "Design" drop down
 designSelect.addEventListener('change', (e) => {
+  colorSelect.style.display = 'block';
   // if "js puns" is selected
   if (e.target.value === 'js puns') {
     console.log('js puns');
     // hide the "heart js" option elements
-
-    // show the "js puns" element
-    // update the "color" field to first available color
+    for (let i = 0; i < colorSelect.options.length; i++) {
+      if (i >= 3) {
+        colorSelect.options[i].style.display = 'none';
+      }
+      // show the "js puns" element
+      if (i < 3) {
+        colorSelect.options[i].style.display = 'block';
+      }
+      colorSelect.value = colorSelect.options[0].value;
+    }
   }
 
   // if "heart js" is selected
   if (e.target.value === 'heart js') {
     console.log('heart js');
-    // hide th "js puns" option elements
-    // show the "heart js" option elements
-    // update the "color" field to first available color
+    // hide the "js puns" option elements
+    for (let i = 0; i < colorSelect.options.length; i++) {
+      if (i < 3) {
+        colorSelect.options[i].style.display = 'none';
+      }
+      // show the "heart js" option elements
+      if (i >= 3) {
+        colorSelect.options[i].style.display = 'block';
+      }
+      colorSelect.value = colorSelect.options[3].value;
+    }
   }
 });
