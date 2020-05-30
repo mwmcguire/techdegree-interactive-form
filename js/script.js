@@ -74,27 +74,24 @@ const totalCostDiv = document.createElement('div');
 activitySection.append(totalCostDiv);
 let totalCost = 0;
 
-activitySection.addEventListener('change', () => {
-  let activity = document.querySelector('input[type="checkbox"]:checked');
-  console.log(activity);
+// listen for changes in the activity section
+activitySection.addEventListener('change', (e) => {
+  // target checkbox input
+  let activity = e.target;
 
+  // grab the values from the data-cost attribute
   let activityCost = parseInt(activity.dataset.cost);
-  console.log(activityCost);
-  console.log(typeof activityCost);
 
-  if (activity === 'checked') {
-    console.log('checked');
+  // check if checkbox is checked
+  if (activity.checked) {
+    // if true add cost of activity to total cost
+    totalCost += activityCost;
   } else {
-    console.log('unchecked');
+    // if false subtract cost of activity from total cost
+    totalCost -= activityCost;
   }
+
+  totalCostDiv.textContent = 'Total: $' + totalCost;
 });
 
-// const checkbox = document.querySelector('input[type="checkbox"]');
-
-// let activity = {
-//   isChecked: false,
-//   day: ,
-//   time: '',
-//   cost: 0,
-// };
 // When an activity is selected that conflicts with another activity, conflicting activity is grayed out
