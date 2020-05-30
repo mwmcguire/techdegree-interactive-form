@@ -82,6 +82,9 @@ activitySection.addEventListener('change', (e) => {
   // grab the values from the data-cost attribute
   let activityCost = parseInt(activity.dataset.cost);
 
+  // grab the values from the data-day-and-time attribute
+  let activityTime = activity.dataset.dayAndTime;
+
   // check if checkbox is checked
   if (activity.checked) {
     // if true add cost of activity to total cost
@@ -92,6 +95,23 @@ activitySection.addEventListener('change', (e) => {
   }
 
   totalCostDiv.textContent = 'Total: $' + totalCost;
+
+  // loop over checkbox inputs
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+  for (let i = 0; i < checkboxes.length; i++) {
+    console.log(checkboxes[i]);
+    if (
+      checkboxes[i].dataset.dayAndTime === activityTime &&
+      activity !== checkboxes[i]
+    ) {
+      if (activity.checked) {
+        checkboxes[i].disabled = true;
+      } else {
+        checkboxes[i].disabled = false;
+      }
+    }
+  }
 });
 
-// When an activity is selected that conflicts with another activity, conflicting activity is grayed out
+// When an activity is selected that conflicts with another activity, conflicting activity is disabled
