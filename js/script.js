@@ -1,3 +1,4 @@
+//------ BASIC INFO -------//
 // On page load focus on first text field
 window.addEventListener('load', () => document.getElementById('name').focus());
 
@@ -14,6 +15,7 @@ titleSelect.addEventListener('change', () => {
   }
 });
 
+//------ T-SHIRT INFO -------//
 // Filter color options by selected theme
 // When form is loaded, update "Design" and "Color" fields to tell user to select theme before color
 // Hide "Select Theme" option in "Design" menu
@@ -64,3 +66,35 @@ designSelect.addEventListener('change', (e) => {
     }
   }
 });
+
+//------ REGISTER FOR ACTIVITIES -------//
+// When checkboxes are selected, tally total at the bottom of section
+const activitySection = document.querySelector('.activities');
+const totalCostDiv = document.createElement('div');
+activitySection.append(totalCostDiv);
+let totalCost = 0;
+
+activitySection.addEventListener('change', () => {
+  let activity = document.querySelector('input[type="checkbox"]:checked');
+  console.log(activity);
+
+  let activityCost = parseInt(activity.dataset.cost);
+  console.log(activityCost);
+  console.log(typeof activityCost);
+
+  if (activity === 'checked') {
+    console.log('checked');
+  } else {
+    console.log('unchecked');
+  }
+});
+
+// const checkbox = document.querySelector('input[type="checkbox"]');
+
+// let activity = {
+//   isChecked: false,
+//   day: ,
+//   time: '',
+//   cost: 0,
+// };
+// When an activity is selected that conflicts with another activity, conflicting activity is grayed out
