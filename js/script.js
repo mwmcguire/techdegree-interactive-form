@@ -96,6 +96,7 @@ activitySection.addEventListener('change', (e) => {
 
   totalCostDiv.textContent = 'Total: $' + totalCost;
 
+  // When an activity is selected that conflicts with another activity, conflicting activity is disabled
   // loop over checkbox inputs
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
@@ -114,4 +115,33 @@ activitySection.addEventListener('change', (e) => {
   }
 });
 
-// When an activity is selected that conflicts with another activity, conflicting activity is disabled
+//------ PAYMENT SECTION -------//
+const paymentOptions = document.getElementById('payment');
+const creditCard = document.getElementById('credit-card');
+const payPal = document.getElementById('paypal');
+const bitcoin = document.getElementById('bitcoin');
+
+// Hide the paypal and bitcoin text initially
+payPal.style.display = 'none';
+bitcoin.style.display = 'none';
+
+// Hide the "Select Payment Method" option
+const selectMethod = document.querySelector('option[value="select method"]');
+selectMethod.style.display = 'none';
+
+// Event Listener to determine which payment option is selected
+paymentOptions.addEventListener('change', () => {
+  if (paymentOptions.value === 'credit card') {
+    creditCard.style.display = 'block';
+    payPal.style.display = 'none';
+    bitcoin.style.display = 'none';
+  } else if (paymentOptions.value === 'paypal') {
+    creditCard.style.display = 'none';
+    payPal.style.display = 'block';
+    bitcoin.style.display = 'none';
+  } else if (paymentOptions.value === 'bitcoin') {
+    creditCard.style.display = 'none';
+    payPal.style.display = 'none';
+    bitcoin.style.display = 'block';
+  }
+});
