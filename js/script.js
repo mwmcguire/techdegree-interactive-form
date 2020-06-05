@@ -69,6 +69,7 @@ designSelect.addEventListener('change', (e) => {
 
 //------ REGISTER FOR ACTIVITIES -------//
 // When checkboxes are selected, tally total at the bottom of section
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 const activitySection = document.querySelector('.activities');
 const totalCostDiv = document.createElement('div');
 activitySection.append(totalCostDiv);
@@ -98,10 +99,7 @@ activitySection.addEventListener('change', (e) => {
 
   // When an activity is selected that conflicts with another activity, conflicting activity is disabled
   // loop over checkbox inputs
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
   for (let i = 0; i < checkboxes.length; i++) {
-    console.log(checkboxes[i]);
     if (
       checkboxes[i].dataset.dayAndTime === activityTime &&
       activity !== checkboxes[i]
@@ -145,3 +143,62 @@ paymentOptions.addEventListener('change', () => {
     bitcoin.style.display = 'block';
   }
 });
+
+//------ FORM VALIDATION -------//
+const validateName = () => {
+  const nameInput = document.getElementById('name');
+  // Check for input in Name field
+  if (nameInput.value) {
+    // If value is present remove error indicators and return true
+    nameInput.removeAttribute('placeholder');
+    nameInput.removeAttribute('style');
+    return true;
+  } else {
+    // If value is not present add error indicators and return false
+    nameInput.placeholder = "Field can't be blank";
+    nameInput.style.borderColor = 'red';
+    return false;
+  }
+};
+
+const validateEmail = () => {
+  const emailInput = document.getElementById('mail');
+  // Check for input in Email field
+  if (emailInput.value) {
+    // If value is present remove error indicators and return true
+    emailInput.removeAttribute('placeholder');
+    emailInput.removeAttribute('style');
+    return true;
+  } else {
+    // If value is not present add error indicators and return false
+    emailInput.placeholder = "Field can't be blank";
+    emailInput.style.borderColor = 'red';
+    return false;
+  }
+};
+
+const validateActivities = () => {
+  for (let i = 0; i < checkboxes.length; i++) {
+    console.log(checkboxes[i]);
+    if (checkboxes[i].checked) {
+      console.log(true);
+    } else {
+      console.log(false);
+    }
+  }
+};
+
+/*
+const validatePayment = () => {
+
+}
+*/
+
+// Name = required
+// Email = required
+// Acitivities = required
+
+// Credit Card
+//    number
+//    zip code
+//    CVV
