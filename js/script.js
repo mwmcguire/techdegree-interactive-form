@@ -22,8 +22,10 @@ titleSelect.addEventListener('change', () => {
 const designSelect = document.getElementById('design');
 designSelect.options[0].style.display = 'none';
 
-// Update "Color" field to read "Please select a T-shirt theme
+// Hide "Color" label and select menu until T-Shirt design is selected
+const colorLabel = document.querySelector('label[for="color"]');
 const colorSelect = document.getElementById('color');
+colorLabel.style.display = 'none';
 colorSelect.style.display = 'none';
 
 // Hide the colors in the "Color" drop down menu
@@ -33,10 +35,10 @@ for (let i = 0; i < colorSelect.options.length; i++) {
 
 // Update "Color" field when corresponding color theme is selected in "Design" drop down
 designSelect.addEventListener('change', (e) => {
+  colorLabel.style.display = 'block';
   colorSelect.style.display = 'block';
   // if "js puns" is selected
   if (e.target.value === 'js puns') {
-    console.log('js puns');
     // hide the "heart js" option elements
     for (let i = 0; i < colorSelect.options.length; i++) {
       if (i >= 3) {
@@ -52,7 +54,6 @@ designSelect.addEventListener('change', (e) => {
 
   // if "heart js" is selected
   if (e.target.value === 'heart js') {
-    console.log('heart js');
     // hide the "js puns" option elements
     for (let i = 0; i < colorSelect.options.length; i++) {
       if (i < 3) {
