@@ -95,6 +95,7 @@ activitySection.addEventListener('change', (e) => {
     totalCost -= activityCost;
   }
 
+  totalCostDiv.removeAttribute('style');
   totalCostDiv.textContent = 'Total: $' + totalCost;
 
   // When an activity is selected that conflicts with another activity, conflicting activity is disabled
@@ -145,11 +146,13 @@ paymentOptions.addEventListener('change', () => {
 });
 
 //------ FORM VALIDATION -------//
+// Function to validate Name input field
+// Checks that value is present
 const validateName = () => {
   const nameInput = document.getElementById('name');
-  // Check for input in Name field
+  // If value is present
   if (nameInput.value) {
-    // If value is present remove error indicators and return true
+    // Remove error indicators and return true
     nameInput.removeAttribute('placeholder');
     nameInput.removeAttribute('style');
     return true;
@@ -161,11 +164,15 @@ const validateName = () => {
   }
 };
 
+// Function to validate Email input field
+// Checks that value is present and validly formatted email address
 const validateEmail = () => {
   const emailInput = document.getElementById('mail');
-  // Check for input in Email field
-  if (emailInput.value) {
-    // If value is present remove error indicators and return true
+  const emailValid = /\S+@\S+\.\S+/;
+  const isEmailValid = emailValid.test(emailInput.value);
+  // If value is present and valid email
+  if (emailInput.value && isEmailValid === true) {
+    // Remove error indicators and return true
     emailInput.removeAttribute('placeholder');
     emailInput.removeAttribute('style');
     return true;
@@ -177,28 +184,119 @@ const validateEmail = () => {
   }
 };
 
+// Function to validate Activities input field
+// Checks that at least 1 checkbox is checked
 const validateActivities = () => {
+  // Variable to hold how many boxes are checked
+  let checkedBoxes = 0;
   for (let i = 0; i < checkboxes.length; i++) {
-    console.log(checkboxes[i]);
     if (checkboxes[i].checked) {
-      console.log(true);
-    } else {
-      console.log(false);
+      checkedBoxes += 1;
     }
+  }
+
+  if (checkedBoxes === 0) {
+    totalCostDiv.textContent = 'Please select an activity';
+    totalCostDiv.style.color = 'red';
   }
 };
 
-/*
-const validatePayment = () => {
+// Function to validate Card Number input field
+// Checks that value is present and between 13 and 16 digits and a number
+const validateCardNumber = () => {
+  const ccNumInput = document.getElementById('cc-num');
+  const ccNumInputNumber = parseInt(ccNumInput.value);
+  // If value is present and correct length and a number
+  if (
+    ccNumInput.value &&
+    ccNumInput.value.length >= 13 &&
+    ccNumInput.value.length <= 16 &&
+    isNaN(ccNumInputNumber) === false
+  ) {
+    // Remove error indicators and return true
+    ccNumInput.removeAttribute('style');
+    return true;
+  } else {
+    // Else add error indicators and return false
+    ccNumInput.style.borderColor = 'red';
+    return false;
+  }
+};
 
-}
-*/
+// Function to validate Zip Code input field
+// Checks that value is present and a 5 digit number
+const validateZip = () => {
+  const zipInput = document.getElementById('zip');
+  const zipInputNumber = parseInt(zipInput.value);
+  // If value is present and correct length and a number
+  if (
+    zipInput.value &&
+    zipInput.value.length === 5 &&
+    isNaN(zipInputNumber) === false
+  ) {
+    // Remove error indicators and return true
+    zipInput.removeAttribute('style');
+    return true;
+  } else {
+    // Else add error indicators and return false
+    zipInput.style.borderColor = 'red';
+    return false;
+  }
+};
 
-// Name = required
-// Email = required
-// Acitivities = required
+// Function to validate CVV input field
+// Checks that value is present and a 3 digit number
+const validateCVV = () => {
+  const cvvInput = document.getElementById('cvv');
+  const cvvInputNumber = parseInt(cvvInput.value);
+  // If value is present and correct length and a number
+  if (
+    cvvInput.value &&
+    cvvInput.value.length === 3 &&
+    isNaN(cvvInputNumber) === false
+  ) {
+    // Remove error indicators and return true
+    cvvInput.removeAttribute('style');
+    return true;
+  } else {
+    // Else add error indicators and return false
+    cvvInput.style.borderColor = 'red';
+    return false;
+  }
+};
 
-// Credit Card
-//    number
-//    zip code
-//    CVV
+// Master validation function
+const validateAll = () => {
+  validateName();
+  validateEmail();
+  validateActivities();
+
+  // If "credit card" is selected payment method, run credit card validation
+  if (paymentOptions.value === 'credit card') {
+    validateCardNumber();
+    validateZip();
+    validateCVV();
+  }
+
+  if (
+    validateName() &&
+    validateEmail() &&
+    validateActivities() &&
+    validateCardNumber() &&
+    validateZip() &&
+    validateCVV()
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const registerBtn = document.querySelector('button[type="submit"]');
+
+registerBtn.addEventListener('click', (e) => {
+  validateAll();
+  if (validateAll() === false) {
+    e.preventDefault();
+  }
+});
