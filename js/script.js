@@ -108,8 +108,10 @@ activitySection.addEventListener('change', (e) => {
     ) {
       if (activity.checked) {
         checkboxes[i].disabled = true;
+        checkboxes[i].parentElement.style.color = 'rgb(152, 152, 152)';
       } else {
         checkboxes[i].disabled = false;
+        checkboxes[i].parentElement.style.color = 'rgb(0, 0, 0)';
       }
     }
   }
@@ -161,18 +163,33 @@ const validateName = () => {
     // If value is not present add error indicators and return false
     nameInput.placeholder = "Field can't be blank";
     nameInput.style.borderColor = 'red';
+    nameInput.scrollIntoView();
     return false;
   }
 };
 
+//------ EMAIL VALIDATION ------//
+const emailInput = document.getElementById('mail');
+const emailValidFormat = /\S+@\S+\.\S+/;
+const div = document.createElement('div');
+
+emailInput.addEventListener('keyup', () => {
+  const isEmailValidFormat = emailValidFormat.test(emailInput.value);
+  if (isEmailValidFormat === false) {
+    div.textContent = 'Email must be formated as "xxx@xxx.xxx"';
+    div.setAttribute('id', 'email-error');
+    emailInput.parentNode.insertBefore(div, emailInput);
+  } else {
+    const emailError = document.getElementById('email-error');
+    emailError.remove();
+  }
+});
 // Function to validate Email input field
-// Checks that value is present and validly formatted email address
+// Checks that value is present and valid formatted email address
 const validateEmail = () => {
-  const emailInput = document.getElementById('mail');
-  const emailValid = /\S+@\S+\.\S+/;
-  const isEmailValid = emailValid.test(emailInput.value);
+  const isEmailValidFormat = emailValidFormat.test(emailInput.value);
   // If value is present and valid email
-  if (emailInput.value && isEmailValid === true) {
+  if (emailInput.value && isEmailValidFormat === true) {
     // Remove error indicators and return true
     emailInput.removeAttribute('placeholder');
     emailInput.removeAttribute('style');
@@ -181,6 +198,7 @@ const validateEmail = () => {
     // If value is not present add error indicators and return false
     emailInput.placeholder = "Field can't be blank";
     emailInput.style.borderColor = 'red';
+    emailInput.scrollIntoView();
     return false;
   }
 };
@@ -199,6 +217,7 @@ const validateActivities = () => {
   if (checkedBoxes === 0) {
     totalCostDiv.textContent = 'Please select an activity';
     totalCostDiv.style.color = 'red';
+    activitySection.scrollIntoView();
   }
 };
 
@@ -220,6 +239,7 @@ const validateCardNumber = () => {
   } else {
     // Else add error indicators and return false
     ccNumInput.style.borderColor = 'red';
+    paymentOptions.scrollIntoView();
     return false;
   }
 };
@@ -241,6 +261,7 @@ const validateZip = () => {
   } else {
     // Else add error indicators and return false
     zipInput.style.borderColor = 'red';
+    paymentOptions.scrollIntoView();
     return false;
   }
 };
@@ -262,6 +283,7 @@ const validateCVV = () => {
   } else {
     // Else add error indicators and return false
     cvvInput.style.borderColor = 'red';
+    paymentOptions.scrollIntoView();
     return false;
   }
 };
