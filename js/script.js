@@ -152,7 +152,6 @@ paymentOptions.addEventListener('change', () => {
 // Function to validate Name input field
 // Checks that value is present
 const validateName = () => {
-  console.log('validating name...');
   const nameInput = document.getElementById('name');
   // If value is present
   if (nameInput.value) {
@@ -192,7 +191,6 @@ emailInput.addEventListener('keyup', () => {
 // Function to validate Email input field
 // Checks that value is present and valid formatted email address
 const validateEmail = () => {
-  console.log('validating email...');
   const isEmailValidFormat = emailValidFormat.test(emailInput.value);
   // If value is present and valid email
   if (emailInput.value && isEmailValidFormat === true) {
@@ -212,7 +210,6 @@ const validateEmail = () => {
 // Function to validate Activities input field
 // Checks that at least 1 checkbox is checked
 const validateActivities = () => {
-  console.log('validating activities...');
   // Variable to hold how many boxes are checked
   let checkedBoxes = 0;
   for (let i = 0; i < checkboxes.length; i++) {
@@ -233,7 +230,6 @@ const validateActivities = () => {
 // Function to validate Card Number input field
 // Checks that value is present and between 13 and 16 digits and a number
 const validateCardNumber = () => {
-  console.log('validating cc...');
   const ccNumInput = document.getElementById('cc-num');
   const ccNumInputNumber = parseInt(ccNumInput.value);
   // If value is present and correct length and a number
@@ -300,7 +296,6 @@ const validateCVV = () => {
 
 // Master validation function
 const validateAll = () => {
-  console.log('validating all...');
   validateName();
   validateEmail();
   validateActivities();
@@ -334,9 +329,7 @@ const validateAll = () => {
 const registerBtn = document.querySelector('button[type="submit"]');
 
 registerBtn.addEventListener('click', (e) => {
-  console.log('click');
   if (!validateAll()) {
-    console.log('stop submission');
     e.preventDefault();
   }
 });
