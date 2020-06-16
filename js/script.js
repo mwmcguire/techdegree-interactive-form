@@ -2,7 +2,7 @@
 // On page load focus on first text field
 window.addEventListener('load', () => document.getElementById('name').focus());
 
-// hide other job role text input / show when "other" option is selected from job role dropdown
+// Hide other job role text input / show when "other" option is selected from job role dropdown
 const otherInput = document.getElementById('other-title');
 const titleSelect = document.getElementById('title');
 otherInput.style.display = 'none';
@@ -16,8 +16,6 @@ titleSelect.addEventListener('change', () => {
 });
 
 //------ T-SHIRT INFO -------//
-// Filter color options by selected theme
-// When form is loaded, update "Design" and "Color" fields to tell user to select theme before color
 // Hide "Select Theme" option in "Design" menu
 const designSelect = document.getElementById('design');
 designSelect.options[0].style.display = 'none';
@@ -100,7 +98,6 @@ activitySection.addEventListener('change', (e) => {
   totalCostDiv.textContent = 'Total: $' + totalCost;
 
   // When an activity is selected that conflicts with another activity, conflicting activity is disabled
-  // loop over checkbox inputs
   for (let i = 0; i < checkboxes.length; i++) {
     if (
       checkboxes[i].dataset.dayAndTime === activityTime &&
@@ -130,6 +127,9 @@ bitcoin.style.display = 'none';
 // Hide the "Select Payment Method" option
 const selectMethod = document.querySelector('option[value="select method"]');
 selectMethod.style.display = 'none';
+
+// Set credit card as default payment method
+paymentOptions.value = 'credit card';
 
 // Event Listener to determine which payment option is selected
 paymentOptions.addEventListener('change', () => {
@@ -172,10 +172,10 @@ const validateName = () => {
 const emailInput = document.getElementById('mail');
 const emailValidFormat = /\S+@\S+\.\S+/;
 // Create new div to display real-time Email formatting help
-const div = document.createElement('div');
-div.textContent = 'Email must be formated as "xxx@xxx.xxx"';
-div.setAttribute('id', 'email-error');
-emailInput.parentNode.insertBefore(div, emailInput);
+const emailValidDiv = document.createElement('div');
+emailValidDiv.textContent = 'Email must be formated as "xxx@xxx.xxx"';
+emailValidDiv.setAttribute('id', 'email-error');
+emailInput.parentNode.insertBefore(emailValidDiv, emailInput);
 const emailError = document.getElementById('email-error');
 emailError.style.display = 'none';
 
@@ -188,6 +188,7 @@ emailInput.addEventListener('keyup', () => {
     emailError.style.display = 'none';
   }
 });
+
 // Function to validate Email input field
 // Checks that value is present and valid formatted email address
 const validateEmail = () => {
@@ -207,6 +208,7 @@ const validateEmail = () => {
   }
 };
 
+//------ ACTIVITIES VALIDATION ------//
 // Function to validate Activities input field
 // Checks that at least 1 checkbox is checked
 const validateActivities = () => {
@@ -227,11 +229,29 @@ const validateActivities = () => {
   }
 };
 
+//------ CREDIT CARD VALIDATION ------//
+const ccForm = document.getElementById('credit-card');
+const validCardNumDiv = document.createElement('div');
+validCardNumDiv.style.color = 'red';
+ccForm.parentNode.insertBefore(validCardNumDiv, ccForm);
+
 // Function to validate Card Number input field
 // Checks that value is present and between 13 and 16 digits and a number
 const validateCardNumber = () => {
   const ccNumInput = document.getElementById('cc-num');
   const ccNumInputNumber = parseInt(ccNumInput.value);
+
+  if (!ccNumInput.value) {
+    validCardNumDiv.textContent = 'Card Number cannot be blank';
+  } else if (ccNumInput.value.length < 13 || ccNumInput.value.length > 16) {
+    validCardNumDiv.textContent =
+      'Card Number must be between 13 and 16 digits';
+  } else if (isNaN(ccNumInputNumber) === true) {
+    validCardNumDiv.textContent = 'Card Number must contain numbers only';
+  } else {
+    validCardNumDiv.textContent = '';
+  }
+
   // If value is present and correct length and a number
   if (
     ccNumInput.value &&
@@ -250,11 +270,27 @@ const validateCardNumber = () => {
   }
 };
 
+//------- ZIP CODE VALIDATION --------//
+const validZipDiv = document.createElement('div');
+validZipDiv.style.color = 'red';
+ccForm.parentNode.insertBefore(validZipDiv, ccForm);
+
 // Function to validate Zip Code input field
 // Checks that value is present and a 5 digit number
 const validateZip = () => {
   const zipInput = document.getElementById('zip');
   const zipInputNumber = parseInt(zipInput.value);
+
+  if (!zipInput.value) {
+    validZipDiv.textContent = 'Zip Code cannot be blank';
+  } else if (zipInput.value.length != 5) {
+    validZipDiv.textContent = 'Zip Code must be 5 digits';
+  } else if (isNaN(zipInputNumber) === true) {
+    validZipDiv.textContent = 'Zip Code must contain numbers only';
+  } else {
+    validZipDiv.textContent = '';
+  }
+
   // If value is present and correct length and a number
   if (
     zipInput.value &&
@@ -272,11 +308,27 @@ const validateZip = () => {
   }
 };
 
+//------- CVV VALIDATION --------//
+const validCVVDiv = document.createElement('div');
+validCVVDiv.style.color = 'red';
+ccForm.parentNode.insertBefore(validCVVDiv, ccForm);
+
 // Function to validate CVV input field
 // Checks that value is present and a 3 digit number
 const validateCVV = () => {
   const cvvInput = document.getElementById('cvv');
   const cvvInputNumber = parseInt(cvvInput.value);
+
+  if (!cvvInput.value) {
+    validCVVDiv.textContent = 'CVV cannot be blank';
+  } else if (cvvInput.value.length != 3) {
+    validCVVDiv.textContent = 'CVV must be 3 digits';
+  } else if (isNaN(cvvInputNumber) === true) {
+    validCVVDiv.textContent = 'CVV must contain numbers only';
+  } else {
+    validCVVDiv.textContent = '';
+  }
+
   // If value is present and correct length and a number
   if (
     cvvInput.value &&
@@ -294,6 +346,7 @@ const validateCVV = () => {
   }
 };
 
+//---- VALIDATE ALL ------//
 // Master validation function
 const validateAll = () => {
   validateName();
@@ -318,6 +371,9 @@ const validateAll = () => {
       return false;
     }
   } else if (paymentOptions.value != 'credit card') {
+    validCardNumDiv.textContent = '';
+    validZipDiv.textContent = '';
+    validCVVDiv.textContent = '';
     if (validateName() && validateEmail() && validateActivities()) {
       return true;
     } else {
