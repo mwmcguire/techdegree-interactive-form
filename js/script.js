@@ -172,17 +172,21 @@ const validateName = () => {
 //------ EMAIL VALIDATION ------//
 const emailInput = document.getElementById('mail');
 const emailValidFormat = /\S+@\S+\.\S+/;
+// Create new div to display real-time Email formatting help
 const div = document.createElement('div');
+div.textContent = 'Email must be formated as "xxx@xxx.xxx"';
+div.setAttribute('id', 'email-error');
+emailInput.parentNode.insertBefore(div, emailInput);
+const emailError = document.getElementById('email-error');
+emailError.style.display = 'none';
 
+// Event listener to listen for keystrokes and toggle Email formatting div
 emailInput.addEventListener('keyup', () => {
   const isEmailValidFormat = emailValidFormat.test(emailInput.value);
   if (isEmailValidFormat === false) {
-    div.textContent = 'Email must be formated as "xxx@xxx.xxx"';
-    div.setAttribute('id', 'email-error');
-    emailInput.parentNode.insertBefore(div, emailInput);
+    emailError.style.display = 'block';
   } else {
-    const emailError = document.getElementById('email-error');
-    emailError.remove();
+    emailError.style.display = 'none';
   }
 });
 // Function to validate Email input field
