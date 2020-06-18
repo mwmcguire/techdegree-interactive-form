@@ -236,17 +236,28 @@ validCardNumDiv.style.color = 'red';
 ccForm.parentNode.insertBefore(validCardNumDiv, ccForm);
 
 // Function to validate Card Number input field
-// Checks that value is present and between 13 and 16 digits and a number
+// Checks that value is present and between 13 and 16 digits and is a number
 const validateCardNumber = () => {
   const ccNumInput = document.getElementById('cc-num');
-  const ccNumInputNumber = parseInt(ccNumInput.value);
+  let isCCnumValidFormat = false;
 
+  // Check for inputs that are not numbers
+  for (let i = 0; i < ccNumInput.value.length; i++) {
+    if (isNaN(ccNumInput.value[i])) {
+      console.log(ccNumInput.value[i] + ' is not a number');
+      isCCnumValidFormat = false;
+    } else {
+      isCCnumValidFormat = true;
+    }
+  }
+
+  // Display error message if valid conditions are not met
   if (!ccNumInput.value) {
     validCardNumDiv.textContent = 'Card Number cannot be blank';
   } else if (ccNumInput.value.length < 13 || ccNumInput.value.length > 16) {
     validCardNumDiv.textContent =
       'Card Number must be between 13 and 16 digits';
-  } else if (isNaN(ccNumInputNumber) === true) {
+  } else if (isCCnumValidFormat === false) {
     validCardNumDiv.textContent = 'Card Number must contain numbers only';
   } else {
     validCardNumDiv.textContent = '';
@@ -257,15 +268,17 @@ const validateCardNumber = () => {
     ccNumInput.value &&
     ccNumInput.value.length >= 13 &&
     ccNumInput.value.length <= 16 &&
-    isNaN(ccNumInputNumber) === false
+    isCCnumValidFormat === true
   ) {
     // Remove error indicators and return true
     ccNumInput.removeAttribute('style');
+    console.log(isCCnumValidFormat);
     return true;
   } else {
     // Else add error indicators and return false
     ccNumInput.style.borderColor = 'red';
     paymentOptions.scrollIntoView();
+    console.log(isCCnumValidFormat);
     return false;
   }
 };
@@ -279,13 +292,23 @@ ccForm.parentNode.insertBefore(validZipDiv, ccForm);
 // Checks that value is present and a 5 digit number
 const validateZip = () => {
   const zipInput = document.getElementById('zip');
-  const zipInputNumber = parseInt(zipInput.value);
+  let isZipValidFormat;
 
+  // Check for inputs that are not numbers
+  for (let i = 0; i < zipInput.value.length; i++) {
+    if (isNaN(zipInput.value[i])) {
+      isZipValidFormat = false;
+    } else {
+      isZipValidFormat = true;
+    }
+  }
+
+  // Display error message if valid conditions are not met
   if (!zipInput.value) {
     validZipDiv.textContent = 'Zip Code cannot be blank';
   } else if (zipInput.value.length != 5) {
     validZipDiv.textContent = 'Zip Code must be 5 digits';
-  } else if (isNaN(zipInputNumber) === true) {
+  } else if (isZipValidFormat === false) {
     validZipDiv.textContent = 'Zip Code must contain numbers only';
   } else {
     validZipDiv.textContent = '';
@@ -295,7 +318,7 @@ const validateZip = () => {
   if (
     zipInput.value &&
     zipInput.value.length === 5 &&
-    isNaN(zipInputNumber) === false
+    isZipValidFormat === true
   ) {
     // Remove error indicators and return true
     zipInput.removeAttribute('style');
