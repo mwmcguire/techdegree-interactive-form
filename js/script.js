@@ -149,6 +149,8 @@ paymentOptions.addEventListener('change', () => {
 });
 
 //------ FORM VALIDATION -------//
+// Regex to accept only numbers
+const isNumber = /^[0-9]*$/;
 // Function to validate Name input field
 // Checks that value is present
 const validateName = () => {
@@ -239,17 +241,7 @@ ccForm.parentNode.insertBefore(validCardNumDiv, ccForm);
 // Checks that value is present and between 13 and 16 digits and is a number
 const validateCardNumber = () => {
   const ccNumInput = document.getElementById('cc-num');
-  let isCCnumValidFormat = false;
-
-  // Check for inputs that are not numbers
-  for (let i = 0; i < ccNumInput.value.length; i++) {
-    if (isNaN(ccNumInput.value[i])) {
-      console.log(ccNumInput.value[i] + ' is not a number');
-      isCCnumValidFormat = false;
-    } else {
-      isCCnumValidFormat = true;
-    }
-  }
+  const isCCnumValidFormat = isNumber.test(ccNumInput.value);
 
   // Display error message if valid conditions are not met
   if (!ccNumInput.value) {
@@ -272,13 +264,11 @@ const validateCardNumber = () => {
   ) {
     // Remove error indicators and return true
     ccNumInput.removeAttribute('style');
-    console.log(isCCnumValidFormat);
     return true;
   } else {
     // Else add error indicators and return false
     ccNumInput.style.borderColor = 'red';
     paymentOptions.scrollIntoView();
-    console.log(isCCnumValidFormat);
     return false;
   }
 };
@@ -292,16 +282,7 @@ ccForm.parentNode.insertBefore(validZipDiv, ccForm);
 // Checks that value is present and a 5 digit number
 const validateZip = () => {
   const zipInput = document.getElementById('zip');
-  let isZipValidFormat;
-
-  // Check for inputs that are not numbers
-  for (let i = 0; i < zipInput.value.length; i++) {
-    if (isNaN(zipInput.value[i])) {
-      isZipValidFormat = false;
-    } else {
-      isZipValidFormat = true;
-    }
-  }
+  const isZipValidFormat = isNumber.test(zipInput.value);
 
   // Display error message if valid conditions are not met
   if (!zipInput.value) {
@@ -340,13 +321,13 @@ ccForm.parentNode.insertBefore(validCVVDiv, ccForm);
 // Checks that value is present and a 3 digit number
 const validateCVV = () => {
   const cvvInput = document.getElementById('cvv');
-  const cvvInputNumber = parseInt(cvvInput.value);
+  const isCVVvalidFormat = isNumber.test(cvvInput.value);
 
   if (!cvvInput.value) {
     validCVVDiv.textContent = 'CVV cannot be blank';
   } else if (cvvInput.value.length != 3) {
     validCVVDiv.textContent = 'CVV must be 3 digits';
-  } else if (isNaN(cvvInputNumber) === true) {
+  } else if (isCVVvalidFormat === false) {
     validCVVDiv.textContent = 'CVV must contain numbers only';
   } else {
     validCVVDiv.textContent = '';
@@ -356,7 +337,7 @@ const validateCVV = () => {
   if (
     cvvInput.value &&
     cvvInput.value.length === 3 &&
-    isNaN(cvvInputNumber) === false
+    isCVVvalidFormat === true
   ) {
     // Remove error indicators and return true
     cvvInput.removeAttribute('style');
